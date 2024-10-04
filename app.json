@@ -50,7 +50,6 @@
       "quantity": 1
     }
   },
-  "addons": ["heroku-postgresql:essential-0"],
   "scripts": {
     "postdeploy": "bundle exec rails db:prepare"
   },
