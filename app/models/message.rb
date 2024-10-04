@@ -79,10 +79,10 @@ class Message < ApplicationRecord
   end
 
   def update_input_token_cost
-    self.input_token_cost = assistant.language_model.input_token_cost_cents * input_token_count
+    self.input_token_cost = assistant.language_model.input_token_cost_cents.nil? ? 0 : assistant.language_model.input_token_cost_cents * input_token_count
   end
 
   def update_output_token_cost
-    self.output_token_cost = assistant.language_model.output_token_cost_cents * output_token_count
+    self.output_token_cost = assistant.language_model.output_token_cost_cents.nil? ? 0 : assistant.language_model.output_token_cost_cents * output_token_count
   end
 end
