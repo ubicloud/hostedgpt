@@ -2,6 +2,7 @@ class APIService < ApplicationRecord
   URL_OPEN_AI = "https://api.openai.com/"
   URL_ANTHROPIC = "https://api.anthropic.com/"
   URL_GROQ = "https://api.groq.com/openai/v1/"
+  URL_SUFFIX_UBICLOUD = "ubicloud.com/v1"
 
   belongs_to :user
 
@@ -9,7 +10,7 @@ class APIService < ApplicationRecord
 
   enum driver: %w[ openai anthropic ].index_by(&:to_sym)
 
-  validates :url, format: URI::DEFAULT_PARSER.make_regexp(%w[http https]), if: -> { url.present? }
+  #validates :url, format: URI::DEFAULT_PARSER.make_regexp(%w[http https ubicloud]), if: -> { url.present? }
   validates :name, :url, presence: true
 
   normalizes :url, with: -> url { url.strip }
@@ -24,7 +25,7 @@ class APIService < ApplicationRecord
   end
 
   def requires_token?
-    [URL_OPEN_AI, URL_ANTHROPIC].include?(url) # other services may require it but we don't always know
+    [URL_OPEN_AI, URL_ANTHROPIC, URL_SUFFIX_UBICLOUD].include?(url) # other services may require it but we don't always know
   end
 
   def effective_token
@@ -38,6 +39,7 @@ class APIService < ApplicationRecord
     return Setting.default_openai_key if url == URL_OPEN_AI
     return Setting.default_anthropic_key if url == URL_ANTHROPIC
     return Setting.default_groq_key if url == URL_GROQ
+    return Setting.default_ubicloud_key if url == URL_SUFFIX_UBICLOUD
   end
 
   def soft_delete_language_models
