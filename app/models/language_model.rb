@@ -3,23 +3,27 @@ class LanguageModel < ApplicationRecord
   BEST_GPT = "gpt-best"
   BEST_CLAUDE = "claude-best"
   BEST_GROQ = "groq-best"
+  BEST_UBICLOUD = "ubicloud-best"
 
   BEST_MODELS = {
     BEST_GPT => "gpt-4o-2024-05-13",
     BEST_CLAUDE => "claude-3-5-sonnet-20240620",
     BEST_GROQ => "llama3-70b-8192",
+    BEST_UBICLOUD => "llama-3-2-3b-it",
   }
 
   BEST_MODEL_INPUT_PRICES = {
     BEST_GPT => 500,
     BEST_CLAUDE => 300,
     BEST_GROQ => 59,
+    BEST_UBICLOUD => 5,
   }
 
   BEST_MODEL_OUTPUT_PRICES = {
     BEST_GPT => 1500,
     BEST_CLAUDE => 1500,
     BEST_GROQ => 79,
+    BEST_UBICLOUD => 5,
   }
 
   belongs_to :user
