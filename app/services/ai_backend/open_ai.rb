@@ -44,7 +44,7 @@ class AIBackend::OpenAI < AIBackend
         messages: system_message(config[:instructions]) + config[:messages],
         stream: config[:streaming] && @response_handler || nil,
         max_tokens: 2000, # we should really set this dynamically, based on the model, to the max
-        stream_options: config[:streaming] && { include_usage: true } || nil,
+        stream_options: config[:streaming] && { include_usage: true, continuous_usage_stats: false } || nil,
         response_format: { type: "text" },
         tools: @assistant.language_model.supports_tools? && Toolbox.tools || nil,
       }.compact.merge(config[:params] || {})
@@ -53,13 +53,17 @@ class AIBackend::OpenAI < AIBackend
 
   def stream_handler(&chunk_handler)
     proc do |intermediate_response, bytesize|
-      content_chunk = intermediate_response.dig("choices", 0, "delta", "content")
-      tool_calls_chunk = intermediate_response.dig("choices", 0, "delta", "tool_calls")
+      choices = intermediate_response["choices"]
+      content_chunk = choices.size > 0 ? choices.dig(0, "delta", "content") : nil
+      tool_calls_chunk = choices.size > 0 ? choices.dig(0, "delta", "tool_calls") : nil
 
       if (input_tokens, output_tokens = intermediate_response["usage"]&.values_at("prompt_tokens", "completion_tokens"))
         # https://platform.openai.com/docs/api-reference/chat/streaming
         @message.input_token_count = input_tokens
         @message.output_token_count = output_tokens
+      else
+        @message.input_token_count = 0
+        @message.output_token_count = 0
       end
 
       print content_chunk if Rails.env.development?
