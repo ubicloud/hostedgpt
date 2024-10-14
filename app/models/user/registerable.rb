@@ -12,7 +12,7 @@ module User::Registerable
     ubicloud_api_service = api_services.create!(url: APIService::URL_SUFFIX_UBICLOUD, driver: :openai, name: "Ubicloud")
     puts "Created Ubicloud API service"
     [
-      ["llama-3-2-3b-it", "Llama 3.2 3b", "https://1ecdjm6j96722k5v8jar2m60t3.b56xg.lb.", false, false, ubicloud_api_service, 5, 5],
+      ["llama-3-2-3b-it", "Llama 3.2 3b", "https://llama-3-2-3b-it.ai.", true, false, ubicloud_api_service, 5, 5],
     ].each do |api_name, name, url_prefix, supports_tools, supports_images, api_service, input_token_cost_per_million, output_token_cost_per_million|
       million = BigDecimal(1_000_000)
       input_token_cost_cents = input_token_cost_per_million/million

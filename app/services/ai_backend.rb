@@ -94,8 +94,8 @@ class AIBackend
       s += "\n\nNote these additional items that you've been told and remembered:\n\n"
       s += @user.memories.pluck(:detail).join("\n")
     end
-
     s += "\n\nFor the user, the current time is #{DateTime.current.strftime("%-l:%M%P")}; the current date is #{DateTime.current.strftime("%A, %B %-d, %Y")}"
+    s += "\n\nYou are a helpful assistant with tool calling capabilities. Only reply with a tool call if the function exists in the library provided by the user. If it doesn't exist, just reply directly in natural language. When you receive a tool call response, use the output to format an answer to the original user question."
     s.strip
   end
 end

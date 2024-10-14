@@ -14,7 +14,7 @@ module AIBackend::OpenAI::Tools
 
       calls.split(/(?=call_)/).map.with_index do |id, i|
         {
-          index: i,
+          #index: i,
           type: "function",
           id: id[0...40],
           function: {
