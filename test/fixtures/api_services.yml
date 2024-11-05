@@ -62,3 +62,10 @@ taylor_openai_service:
   url: http://taylor.org/doit-open
   token: open-secret
   driver: openai
+
+taylor_ubicloud_service:
+  name: Ubicloud
+  user: taylor
+  url: https://ai.ubicloud.com/v1/
+  token: ubi-secret
+  driver: openai

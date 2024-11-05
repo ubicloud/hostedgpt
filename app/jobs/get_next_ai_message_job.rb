@@ -68,6 +68,8 @@ class GetNextAIMessageJob < ApplicationJob
       set_openai_error
     elsif name == "Groq"
       set_groq_error
+    elsif name == "Ubicloud"
+      set_ubicloud_error
     else
       set_generic_error(name)
     end
@@ -140,6 +142,10 @@ class GetNextAIMessageJob < ApplicationJob
   def set_groq_error
     @message.content_text = "(You need to enter a valid API key for Groq to use Llama. Click your Profile in the bottom " +
       "left and then Settings and then **API Services**. You will find Groq Key instructions.)"
+  end
+
+  def set_ubicloud_error
+    @message.content_text = "(You need to enter a valid API key for Ubicloud.)"
   end
 
   def set_generic_error(name)

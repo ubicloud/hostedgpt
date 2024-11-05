@@ -15,5 +15,9 @@ module Settings
     def groq?(api_service)
       api_service.url == APIService::URL_GROQ
     end
+
+    def ubicloud?(api_service)
+      api_service.url == APIService::URL_UBICLOUD
+    end
   end
 end

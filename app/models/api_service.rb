@@ -2,6 +2,7 @@ class APIService < ApplicationRecord
   URL_OPEN_AI = "https://api.openai.com/"
   URL_ANTHROPIC = "https://api.anthropic.com/"
   URL_GROQ = "https://api.groq.com/openai/v1/"
+  URL_UBICLOUD = "https://ai.ubicloud.com/v1/"
 
   belongs_to :user
 
@@ -24,7 +25,7 @@ class APIService < ApplicationRecord
   end
 
   def requires_token?
-    [URL_OPEN_AI, URL_ANTHROPIC].include?(url) # other services may require it but we don't always know
+    [URL_OPEN_AI, URL_ANTHROPIC, URL_UBICLOUD].include?(url) # other services may require it but we don't always know
   end
 
   def effective_token
@@ -38,6 +39,7 @@ class APIService < ApplicationRecord
     return Setting.default_openai_key if url == URL_OPEN_AI
     return Setting.default_anthropic_key if url == URL_ANTHROPIC
     return Setting.default_groq_key if url == URL_GROQ
+    return Setting.default_ubicloud_key if url == URL_UBICLOUD
   end
 
   def soft_delete_language_models

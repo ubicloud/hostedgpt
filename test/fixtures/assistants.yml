@@ -74,3 +74,12 @@ pacos_asst:
   instructions: Point out flower-related local items, also historical events involving flowers
   tools:  []
   external_id:
+
+ubicloud_asst:
+  user: taylor
+  language_model: ubicloud
+  name: Ubicloud Llama
+  description: Ubicloud Llama 3.1 405B
+  instructions:
+  tools:  []
+  external_id:

@@ -48,6 +48,7 @@ class APIServiceTest < ActiveSupport::TestCase
   test "both ai_backends can be specified for user models" do
     assert_equal AIBackend::Anthropic, language_models(:alpaca).ai_backend
     assert_equal AIBackend::OpenAI, language_models(:guanaco).ai_backend
+    assert_equal AIBackend::OpenAI, language_models(:ubicloud).ai_backend
   end
 
   test "cannot create record without user" do
@@ -76,12 +77,15 @@ class APIServiceTest < ActiveSupport::TestCase
     api_services(:keith_openai_service).update!(token: "GPT321")
     api_services(:keith_anthropic_service).update!(token: "CLAUDE123")
     api_services(:keith_groq_service).update!(token: "GROQ123")
+    api_services(:keith_groq_service).update!(token: "GROQ123")
+    api_services(:taylor_ubicloud_service).update!(token: "UBI123")
 
     stub_features(default_llm_keys: true) do
-      stub_settings(default_openai_key: " ", default_anthropic_key: "", default_groq_key: nil) do
+      stub_settings(default_openai_key: " ", default_anthropic_key: "", default_groq_key: nil, default_ubicloud_key: "") do
         assert_equal "GPT321", api_services(:keith_openai_service).effective_token
         assert_equal "CLAUDE123", api_services(:keith_anthropic_service).effective_token
         assert_equal "GROQ123", api_services(:keith_groq_service).effective_token
+        assert_equal "UBI123", api_services(:taylor_ubicloud_service).effective_token
       end
     end
   end
@@ -90,12 +94,14 @@ class APIServiceTest < ActiveSupport::TestCase
     api_services(:keith_openai_service).update!(token: " ")
     api_services(:keith_anthropic_service).update!(token: "")
     api_services(:keith_groq_service).update!(token: nil)
+    api_services(:taylor_ubicloud_service).update!(token: "")
 
     stub_features(default_llm_keys: true) do
-      stub_settings(default_openai_key: "gpt321", default_anthropic_key: "claude123", default_groq_key: "groq123") do
+      stub_settings(default_openai_key: "gpt321", default_anthropic_key: "claude123", default_groq_key: "groq123", default_ubicloud_key: "ubi123") do
         assert_equal "gpt321", api_services(:keith_openai_service).effective_token
         assert_equal "claude123", api_services(:keith_anthropic_service).effective_token
         assert_equal "groq123", api_services(:keith_groq_service).effective_token
+        assert_equal "ubi123", api_services(:taylor_ubicloud_service).effective_token
       end
     end
   end

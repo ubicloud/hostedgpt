@@ -66,6 +66,37 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_assistant_message_path(assistant)
   end
 
+  test "after create, an account should be bootstrapped and taken to a conversation with a single ubicloud assistant in ubicloud mode" do
+    stub_features(ubicloud_mode: true) do
+      email = "fake_email#{rand(1000)}@example.com"
+      post users_url, params: { person: { personable_type: "User", email: email, personable_attributes: user_attr } }
+
+      user = Person.find_by(email: email).user
+      assert_equal "John", user.first_name
+      assert_equal "Doe", user.last_name
+      assert_equal 1, user.assistants.count, "This new user did not get the expected number of assistants"
+
+      assistant = user.assistants.ordered.first
+
+      assert_equal "Ubicloud Llama", assistant.name
+      assert_equal "Ubicloud Llama 3.1 405B", assistant.description
+
+      language_model = assistant.language_model
+
+      assert_equal "Llama", language_model.name
+      assert_equal "llama", language_model.api_name
+
+      api_service = language_model.api_service
+
+      assert_equal "Ubicloud", api_service.name
+      assert_equal APIService::URL_UBICLOUD, api_service.url
+      assert_equal "openai", api_service.driver
+
+      follow_redirect!
+      assert_redirected_to new_assistant_message_path(assistant)
+    end
+  end
+
   test "updates user preferences" do
     user = users(:keith)
     login_as user

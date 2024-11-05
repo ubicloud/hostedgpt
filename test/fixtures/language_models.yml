@@ -19,6 +19,17 @@ pacos:
   input_token_cost_cents: 0.0001
   output_token_cost_cents: 0.0001
 
+ubicloud:
+  position: 3
+  user: taylor
+  name: Ubicloud
+  api_service: taylor_ubicloud_service
+  api_name: Ubicloud
+  supports_images: false
+  supports_tools: true
+  input_token_cost_cents: 0.0001
+  output_token_cost_cents: 0.0001
+
 # Rob's Language Models
 gpt_4_turbo:
   position: 1
