@@ -34,7 +34,7 @@ module HostedGPT
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    config.time_zone = "Central Time (US & Canada)"
+    config.time_zone = "Amsterdam"
     config.eager_load_paths << Rails.root.join("lib")
 
     url_settings = [:app_url_protocol, :app_url_host]
