@@ -32,6 +32,13 @@ class ToolboxTest < ActiveSupport::TestCase
     end
   end
 
+  test "tools contain only web search in ubicloud mode" do
+    stub_features(ubicloud_mode: true) do
+      assert Toolbox.tools.length == 1
+      assert Toolbox.descendants.include? Toolbox::WebSearch
+    end
+  end
+
   test "describe directive within a tool sets the function description" do
     tool = Toolbox::HelloWorld.tools.find { |t| t[:function][:name] == "helloworld_hi" }
     assert_equal "This is a description for hi", tool.dig(:function, :description)

@@ -130,6 +130,9 @@ GEM
     dockerfile-rails (1.6.10)
       rails (>= 3.0.0)
     drb (2.2.1)
+    duckduckgo (0.1.8)
+      nokogiri
+      open_uri_redirections (~> 0.2.1)
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
@@ -231,6 +234,7 @@ GEM
     omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
+    open_uri_redirections (0.2.1)
     ostruct (0.6.0)
     parallel (1.24.0)
     parser (3.2.2.4)
@@ -455,6 +459,7 @@ DEPENDENCIES
   capybara
   debug
   dockerfile-rails (>= 1.6)
+  duckduckgo
   ffi (~> 1.15.5)
   image_processing (~> 1.13.0)
   importmap-rails

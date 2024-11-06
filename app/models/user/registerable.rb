@@ -28,21 +28,22 @@ module User::Registerable
   def create_initial_assistants_etc_ubicloud
     ubicloud_api_service = api_services.create!(url: APIService::URL_UBICLOUD, driver: :openai, name: "Ubicloud")
     [
-      ["llama", "Llama", false, false, ubicloud_api_service, 5, 5],
-    ].each do |api_name, name, supports_tools, supports_images, api_service, input_token_cost_per_million, output_token_cost_per_million|
+      ["llama", "Llama", true, true, false, true, ubicloud_api_service, 5, 5],
+    ].each do |api_name, name, supports_tools, supports_system_message, supports_images, best, api_service, input_token_cost_per_million, output_token_cost_per_million|
       million = BigDecimal(1_000_000)
       input_token_cost_cents = input_token_cost_per_million/million
       output_token_cost_cents = output_token_cost_per_million/million
 
       language_models.create!(
-        api_name: api_name,
-        api_service: api_service,
-        name: name,
-        best: true,
-        supports_tools: supports_tools,
-        supports_images: supports_images,
-        input_token_cost_cents: input_token_cost_cents,
-        output_token_cost_cents: output_token_cost_cents,
+        api_name:,
+        api_service:,
+        name:,
+        supports_tools:,
+        supports_system_message:,
+        supports_images:,
+        best:,
+        input_token_cost_cents:,
+        output_token_cost_cents:,
       )
     end
 
