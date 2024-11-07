@@ -38,4 +38,15 @@ class User::PreferenceTest < ActiveSupport::TestCase
     new_user.update!(preferences: { dark_mode: "system" })
     assert_equal "system", new_user.preferences[:dark_mode]
   end
+
+  test "web_search preference defaults to true and it can update user web_search preference" do
+    new_user = User.create!(first_name: "First", last_name: "Last")
+    assert_equal true, new_user.preferences[:web_search]
+
+    new_user.update!(preferences: { web_search: false })
+    assert_equal false, new_user.preferences[:web_search]
+
+    new_user.update!(preferences: { web_search: true })
+    assert_equal true, new_user.preferences[:web_search]
+  end
 end

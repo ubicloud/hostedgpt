@@ -30,7 +30,7 @@ class User < ApplicationRecord
   serialize :preferences, coder: JsonSerializer
 
   def preferences
-    attributes["preferences"].with_defaults(dark_mode: "system")
+    attributes["preferences"].with_defaults(dark_mode: "system", web_search: true)
   end
 
   private

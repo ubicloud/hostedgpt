@@ -2,10 +2,11 @@ class Toolbox < SDK
   def self.descendants
     gmail_active = Feature.google_tools? && Current.user&.gmail_credential || nil
     tasks_active = Feature.google_tools? && Current.user&.google_tasks_credential || nil
+    web_search_active = Feature.web_search? && Current.user&.preferences && Current.user.preferences[:web_search] || nil
     test_env = Rails.env.test? || nil
 
     if Feature.ubicloud_mode?
-      [Toolbox::WebSearch]
+      web_search_active ? [Toolbox::WebSearch] : []
     else
       [
         test_env && Toolbox::HelloWorld,
@@ -13,7 +14,7 @@ class Toolbox < SDK
         Toolbox::Memory,
         gmail_active && Toolbox::Gmail,
         tasks_active && Toolbox::GoogleTasks,
-        Toolbox::WebSearch,
+        web_search_active && Toolbox::WebSearch,
       ].compact
     end
 

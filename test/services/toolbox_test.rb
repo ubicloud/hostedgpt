@@ -33,9 +33,27 @@ class ToolboxTest < ActiveSupport::TestCase
   end
 
   test "tools contain only web search in ubicloud mode" do
-    stub_features(ubicloud_mode: true) do
+    stub_features(ubicloud_mode: true, web_search: true) do
+      new_user = User.create!(first_name: "First", last_name: "Last")
+      Current.user = new_user
       assert Toolbox.tools.length == 1
       assert Toolbox.descendants.include? Toolbox::WebSearch
+    end
+
+    stub_features(ubicloud_mode: true, web_search: true) do
+      Current.user = users(:keith)
+      new_user = User.create!(first_name: "First", last_name: "Last")
+      Current.user = new_user
+      new_user.update!(preferences: { web_search: false })
+      refute Toolbox.tools.any?
+    end
+
+    stub_features(ubicloud_mode: true, web_search: false) do
+      Current.user = users(:keith)
+      new_user = User.create!(first_name: "First", last_name: "Last")
+      Current.user = new_user
+      new_user.update!(preferences: { web_search: true })
+      refute Toolbox.tools.any?
     end
   end
 

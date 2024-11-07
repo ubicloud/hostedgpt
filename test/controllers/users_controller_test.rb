@@ -103,9 +103,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_changes "user.preferences[:nav_closed]", to: true do
       assert_changes "user.preferences[:dark_mode]", to: "dark" do
-        patch user_url(user), params: { user: { preferences: { nav_closed: true, dark_mode: "dark" } } }
+        assert_changes "user.preferences[:web_search]", to: false do
+        patch user_url(user), params: { user: { preferences: { nav_closed: true, dark_mode: "dark", web_search: false } } }
         user.reload
-      end
+        end
+     end
     end
     assert_response :redirect
   end
