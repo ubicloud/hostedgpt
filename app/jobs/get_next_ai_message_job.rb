@@ -53,6 +53,20 @@ class GetNextAIMessageJob < ApplicationJob
                                            # so we just return the full tool response message at once. The only time we return
                                            # like this is for tool_calls so we know we can simply assign it here.
 
+    if @message.content_text.blank? &&
+      !@message.content_tool_calls.nil? &&
+      @message.content_tool_calls.is_a?(Array) &&
+      @message.content_tool_calls.one? &&
+      @message.content_tool_calls[0].is_a?(Hash) &&
+      @message.content_tool_calls[0][:type] == "function" &&
+      @message.content_tool_calls[0][:function].is_a?(Hash) &&
+      @message.content_tool_calls[0][:function][:name] == "websearch_get_search_results"
+
+      @message.content_text = "Searching the web"
+      GetNextAIMessageJob.broadcast_updated_message(@message, thinking: true)
+      @message.content_text = ""
+    end
+
     raise Faraday::ParsingError if @message.not_finished?
 
     wrap_up_the_message
