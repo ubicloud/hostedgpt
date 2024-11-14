@@ -96,7 +96,7 @@ class AIBackend
     end
 
     if @assistant.api_service.name == "Ubicloud" && Toolbox.tools.count > 0
-      s += "\n\nYou are a helpful assistant with tool calling capabilities. Only reply with a tool call if you fail to answer a question and if the function exists in the library provided by the user. In any other case, just reply directly in natural language. When you receive a tool call response, use the output to format an answer to the original user question."
+      s += "\n\nYou are a helpful assistant with tool calling capabilities. Only reply with a tool call if you cannot directly answer a question and if the function exists in the library provided by the user. In any other case, just reply directly in natural language. When you receive a tool call response, use the output to format an answer to the original user question."
     end
 
     s += "\n\nFor the user, the current time is #{DateTime.current.strftime("%-l:%M%P")}; the current date is #{DateTime.current.strftime("%A, %B %-d, %Y")}"

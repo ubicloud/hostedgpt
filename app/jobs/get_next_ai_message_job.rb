@@ -165,9 +165,10 @@ class GetNextAIMessageJob < ApplicationJob
   end
 
   def set_unexpected_error(msg, text)
+    msg&.gsub! @assistant.api_service.effective_token, ""
     @message.content_text = "(I received a unexpected response from the API after retrying 3 times, \"#{text}\". The AI servers may be experiencing trouble. " +
       "Try again later or if you keep getting this error ensure your API key is valid and you haven't run out of funds with your AI service.\n\n" +
-      "It's also helpful if you report this to the app developers at: https://github.com/allyourbot/hostedgpt/discussions)\n\n:#{msg}"
+      "It's also helpful if you report this to support@ubicloud.com)\n\n:#{msg}"
   end
 
   def set_billing_error
