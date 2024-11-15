@@ -1,4 +1,4 @@
-<% content_for :heading, "Welcome back" %>
+<% content_for :heading, Feature.ubicloud_mode? ? "Ubicloud EuroGPT" : "Welcome back" %>
 <% if Feature.registration? %>
   <span class="text-sm text-center">
     Don't have an account? <%= link_to "Sign up", register_path, class: "underline" %>
