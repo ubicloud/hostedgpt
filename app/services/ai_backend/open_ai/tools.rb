@@ -12,7 +12,7 @@ module AIBackend::OpenAI::Tools
       names = find_repeats_and_split(content_tool_calls.dig(0, "function", "name"))
       args = content_tool_calls.dig(0, "function", "arguments").split(/(?<=})(?={)/)
 
-      calls.split(/(?=call_)/).map.with_index do |id, i|
+      formatted = calls.split(/(?=call_)/).map.with_index do |id, i|
         {
           index: i,
           type: "function",
@@ -23,6 +23,9 @@ module AIBackend::OpenAI::Tools
           }
         }
       end
+      # we only need the index if there is more than one call
+      formatted.first.delete(:index) if formatted.one?
+      formatted
     rescue
       []
     end
