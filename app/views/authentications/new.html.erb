@@ -80,3 +80,9 @@
     </span>
   <% end %>
 <% end %>
+
+<% if Feature.ubicloud_mode? %>
+  <span class="fixed bottom-0 w-full bg-gray-200 dark:bg-gray-800 text-center p-4 text-sm">
+    By using Ubicloud EuroGPT, you agree to our <%= link_to "Terms", "https://www.ubicloud.com/docs/about/terms-of-service", class: "underline", target: "_blank" %> and have read our <%= link_to "Privacy Policy", "https://www.ubicloud.com/docs/about/privacy-policy", class: "underline", target: "_blank" %>. Contact us at <a href="mailto:eurogpt@ubicloud.com" class="underline">eurogpt@ubicloud.com</a>.
+  </span>
+<% end %>
