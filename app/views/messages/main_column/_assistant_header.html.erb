@@ -1,6 +1,6 @@
 <div class="dropdown">
   <div tabindex="0" role="button" class="inline-flex items-center px-3 py-2 text-lg font-medium outline-none cursor-pointer scale-down rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 focus:bg-gray-50 dark:focus:bg-gray-700">
-    <%= @assistant.name %>
+    <%= Feature.ubicloud_mode? ? @assistant.description : @assistant.name %>
     <%= icon "chevron-down", variant: :mini, size: 18, class: 'text-gray-400 ml-[2px]' %>
   </div>
 
