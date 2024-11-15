@@ -1,6 +1,6 @@
 {
-  "name": "HostedGPT",
-  "short_name": "HostedGPT",
+  "name": "Ubicloud EuroGPT",
+  "short_name": "EuroGPT",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fff",
