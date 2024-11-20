@@ -14,11 +14,11 @@
           How can I help you today?
         </span>
         <% if Feature.ubicloud_mode? %>
-        <span class="text-sm text-gray-500 mt-1">
-          EuroGPT can make mistakes. Verify the information provided.
+        <span class="text-base font-semibold tracking-tighter text-center text-gray-500 mt-1">
+          EuroGPT is open source, runs in Europe, and keeps your business data private.
         </span>
-        <span class="text-sm text-gray-500 mt-1">
-          Enable or disable web search in <%= link_to "Settings", edit_settings_person_path(@assistant), class: "underline" %>.
+        <span class="text-sm text-center tracking-tighter text-gray-500">
+          AI can make mistakes. Verify the information provided. Enable or disable web search in  <%= link_to "Settings", edit_settings_person_path(@assistant), class: "underline" %>.
         </span>
         <% end %>
       </div>

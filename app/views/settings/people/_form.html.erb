@@ -11,15 +11,18 @@
     </div>
   <% end %>
 
+  <% if !Feature.ubicloud_mode? %>
   <div class="my-5">
     <%= form.label :email %>
     <%= form.text_field :email, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full dark:text-black" %>
   </div>
+  <% end %>
 
   <%= form.fields_for :personable_attributes, person.personable do |user_fields| %>
 
     <%= user_fields.hidden_field :id %>
 
+    <% if !Feature.ubicloud_mode? %>
     <div class="my-5">
       <%= user_fields.label :first_name %>
       <%= user_fields.text_field :first_name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full dark:text-black" %>
@@ -29,6 +32,7 @@
       <%= user_fields.label :last_name %>
       <%= user_fields.text_field :last_name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full dark:text-black" %>
     </div>
+    <% end %>
 
     <% person.personable.credentials.type_is("PasswordCredential").each do |credential| %>
       <%= user_fields.fields_for :credentials_attributes, credential, index: credential.id do |credential_fields| %>
