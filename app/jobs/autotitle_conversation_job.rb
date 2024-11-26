@@ -24,7 +24,7 @@ class AutotitleConversationJob < ApplicationJob
 
     ai_backend = @conversation.assistant.api_service.ai_backend.new(@conversation.user, @conversation.assistant)
 
-    if ai_backend.class == AIBackend::OpenAI || ai_backend.class == AIBackend::Anthropic
+    if (ai_backend.class == AIBackend::OpenAI || ai_backend.class == AIBackend::Anthropic) &&  @conversation.assistant.api_service.name != "Ubicloud"
       response = ai_backend.get_oneoff_message(
         system_message,
         [text],
@@ -33,10 +33,10 @@ class AutotitleConversationJob < ApplicationJob
       return JSON.parse(response)["topic"]
     else
       response = ai_backend.get_oneoff_message(
-        system_message,
+        system_message_no_json,
         [text]
       )
-      return response.scan(/(?<=:)"(.+?)"/)&.flatten&.first&.strip
+      return response
     end
   end
 
@@ -59,6 +59,29 @@ class AutotitleConversationJob < ApplicationJob
       Your reply (always do JSON):
       ```
       { "topic": "Rails collection counter" }
+      ```
+    END
+  end
+
+  def system_message_no_json
+    <<~END
+      You extract a 2-4 word topic from text. I will give the text of a chat. You reply with the topic of this chat,
+      but summarize the topic in 2-4 words. Even though it's not a complete sentence, capitalize the first letter of
+      the first word unless it's some odd anomaly like "iPhone". Make sure that your answer matches the language of
+      the text of the chat tht I give you.
+
+      Example:
+      ```
+      when a rails view is rendering a collection, within that collection I want to know if I'm rendering the first item
+      of the collection so I can have a conditional to render it differently
+
+      If your collection is named messages then you can use messages_count within the collection partial and check for
+      messages_count == 0
+      ```
+
+      Your reply:
+      ```
+      Rails collection counter
       ```
     END
   end
