@@ -14,8 +14,8 @@ class AIBackend::Anthropic < AIBackend
     end
   end
 
-  def initialize(user, assistant, conversation = nil, message = nil)
-    super(user, assistant, conversation, message)
+  def initialize(user, assistant, conversation = nil, message = nil, rag_context = nil)
+    super(user, assistant, conversation, message, rag_context)
     begin
       raise ::Anthropic::ConfigurationError if assistant.api_service.requires_token? && assistant.api_service.effective_token.blank?
       Rails.logger.info "Connecting to Anthropic API server at #{assistant.api_service.url} with access token of length #{assistant.api_service.effective_token.to_s.length}"

@@ -28,7 +28,7 @@ module User::Registerable
   def create_initial_assistants_etc_ubicloud
     ubicloud_api_service = api_services.create!(url: APIService::URL_UBICLOUD, driver: :openai, name: "Ubicloud")
     [
-      ["llama", "Llama", true, true, false, true, ubicloud_api_service, 5, 5],
+      ["llama", "Llama", false, true, false, true, ubicloud_api_service, 5, 5],
     ].each do |api_name, name, supports_tools, supports_system_message, supports_images, best, api_service, input_token_cost_per_million, output_token_cost_per_million|
       million = BigDecimal(1_000_000)
       input_token_cost_cents = input_token_cost_per_million/million

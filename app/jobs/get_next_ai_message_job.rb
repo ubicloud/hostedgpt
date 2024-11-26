@@ -25,6 +25,35 @@ class GetNextAIMessageJob < ApplicationJob
     return false          if generation_was_cancelled? || message_is_populated?
     raise WaitForPrevious if @prev_message&.not_finished?
 
+    rag_context = ""
+    if Feature.web_search? && @user.preferences[:web_search]
+      @message.content_text = "Determine if web search is required."
+      GetNextAIMessageJob.broadcast_updated_message(@message, thinking: true)
+      @message.content_text = ""
+
+      response = @conversation.assistant.api_service.ai_backend.new(@conversation.user, @assistant, @conversation, @message).get_oneoff_message_for_recent_conversation("You do not answer questions but reply with a score between 0-1 how important it is to have access to real-time information to answer this question and 1-5 web search words to gather up-to-date information about this question. The format must be: score word1 word2 word3 word4 word5. Example: 0.9 superbowl 2024 winner")
+      importance = response.to_f
+
+      if importance > 0.75
+        search_query = response.split(" ", 2)[1]
+        if search_query.present?
+          @message.content_text = "Searching the web."
+          GetNextAIMessageJob.broadcast_updated_message(@message, thinking: true)
+          @message.content_text = ""
+
+          begin
+            search_results = Toolbox::WebSearch.new.get_search_results(search_query_s: search_query)
+            rag_context = search_results
+          rescue => e
+            @message.content_text = "Web search failed."
+            GetNextAIMessageJob.broadcast_updated_message(@message, thinking: true)
+            @message.content_text = ""
+            Rail.logger.warn "Web search failed: #{e.message}"
+          end
+        end
+      end
+    end
+
     last_sent_at = Time.current
     @message.update!(processed_at: Time.current, content_text: "")
     GetNextAIMessageJob.broadcast_updated_message(@message, thinking: true) # thinking shows dot, signaling to user that we're waiting now on ai_backend
@@ -32,7 +61,7 @@ class GetNextAIMessageJob < ApplicationJob
     Rails.logger.info "\n### Wait for reply" unless Rails.env.test?
 
     response = Current.set(user: @user, message: @message) do
-      ai_backend.new(@conversation.user, @assistant, @conversation, @message)
+      ai_backend.new(@conversation.user, @assistant, @conversation, @message, rag_context)
       .stream_next_conversation_message do |content_chunk|
         @message.content_text += content_chunk
 
