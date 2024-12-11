@@ -3,7 +3,7 @@ require "test_helper"
 class AIBackend::OpenAITestUbicloud < ActiveSupport::TestCase
   setup do
     stub_settings(
-      default_ubicloud_model: "llama-3-1-405b-it",
+      default_ubicloud_model: "llama-3-3-70b-it",
     )
 
     @conversation = conversations(:attachments)
@@ -23,6 +23,6 @@ class AIBackend::OpenAITestUbicloud < ActiveSupport::TestCase
   end
 
   test "ubicloud url is properly set" do
-    assert_equal "https://llama-3-1-405b-it.ai.ubicloud.com/", @openai.client.uri_base
+    assert_equal "https://llama-3-3-70b-it.ai.ubicloud.com/", @openai.client.uri_base
   end
 end

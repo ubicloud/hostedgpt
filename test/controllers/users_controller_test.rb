@@ -79,7 +79,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       assistant = user.assistants.ordered.first
 
       assert_equal "Ubicloud Llama", assistant.name
-      assert_equal "Ubicloud Llama 3.1 405B", assistant.description
+      assert_equal "Ubicloud Llama 3.3 70B", assistant.description
 
       language_model = assistant.language_model
 

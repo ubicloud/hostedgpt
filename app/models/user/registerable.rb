@@ -47,6 +47,6 @@ module User::Registerable
       )
     end
 
-    assistants.create! name: "Ubicloud Llama", description: "Ubicloud Llama 3.1 405B", language_model: language_models.find_by(api_name: "llama")
+    assistants.create! name: "Ubicloud Llama", description: "Ubicloud Llama 3.3 70B", language_model: language_models.find_by(api_name: "llama")
   end
 end

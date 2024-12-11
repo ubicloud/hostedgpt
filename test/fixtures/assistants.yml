@@ -79,7 +79,7 @@ ubicloud_asst:
   user: taylor
   language_model: ubicloud
   name: Ubicloud Llama
-  description: Ubicloud Llama 3.1 405B
+  description: Ubicloud Llama 3.3 70B
   instructions:
   tools:  []
   external_id:
